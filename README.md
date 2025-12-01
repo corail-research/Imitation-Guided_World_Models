@@ -53,7 +53,7 @@ Once you installed it, you need to move the ```libPythonCBS.so``` file into ```a
 
 All the configuration files are already setup to replicate the main results of the paper. If you want to replicate the abltaion studies you should modify the files ```configs/dreamer/DreamerControllerConfig.py``` and ```configs/dreamer/DreamerLearnerConfig.py```. For example, if you want to modify the expert for the random or greedy expert you should replace ```self.EXPERT_TO_FOLLOW = "solver"``` by ```self.EXPERT_TO_FOLLOW = "random"``` or ```self.EXPERT_TO_FOLLOW = "greedy"``` in ```configs/dreamer/DreamerControllerConfig.py```. If you want to remove the world model (DreamerV2) you should set ```self.ABLATION_WM``` to ```True``` in ```configs/dreamer/DreamerControllerConfig.py``` and ```configs/dreamer/DreamerLearnerConfig.py```. And if you want to train in a full imitation learning fashion without reinforcement learning you should set ```self.STEPS_SEQUENTIAL_RL_PHASE``` to ```0``` in ```configs/dreamer/DreamerLearnerConfig.py```.
 ```
-python3 train.py --n_workers 2 --env flatland --env_name 5_agents
+python3 train.py --n_workers 2 --env flatland --env_name 5_agents --time_limit time_limit_in_second --steps steps_in_the_env
 ```
 
 ## Code Structure
