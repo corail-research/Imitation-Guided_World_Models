@@ -47,6 +47,7 @@ pip install -r requirements.txt
 ## Install the solver
 To install the solver, follow the procedure you can found here:  
 [https://github.com/Jiaoyang-Li/Flatland](https://github.com/Jiaoyang-Li/Flatland)
+Once you installed it, you need to move the ```libPythonCBS.so``` file into ```agent/solver/```.
 
 ## Usage
 
