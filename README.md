@@ -56,6 +56,11 @@ All the configuration files are already setup to replicate the main results of t
 python3 train.py --n_workers 2 --env flatland --env_name 5_agents --time_limit time_limit_in_second --steps steps_in_the_env
 ```
 
+## In this repo but not in the paper
+
+You'll find some options not mentioned in the paper, they corresponds to methods we tried but did not performed well. It includes the use of DAgger algorithm which failed beacause of the sensibility of the expert solver to random actions. Indeed, the expert solver does not perform well if periodically we follow a policy which differs from it. We also tried to use the expert action coupled with the observation as an input of the world model. We tried a variant of the DAgger algorithm where we do not use a sequential approach (Imitation Learning then Reinforcement Learning) but a hybrid approach where we optimize both the imitation and the reinforcement losses at the same time with a decreasing weight importance for the imitation loss but then again it perfomed badly.
+
+
 ## Code Structure
 
 - ```agent``` contains implementation of MAMBA 
