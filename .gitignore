@@ -1,0 +1,11 @@
+/venv_mamba_39
+/wandb
+libPythonCBS.so
+boost_1_82_0.tar.bz2
+__pycache__/
+*.py[cod]
+/.idea
+/agent/solver/libPythonCBS.so
+/saved_models
+*.pth
+requirements_max.txt

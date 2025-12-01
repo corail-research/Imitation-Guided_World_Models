@@ -1,0 +1,4 @@
+[console_scripts]
+flatland-demo = flatland.cli:demo
+flatland-evaluator = flatland.cli:evaluator
+
