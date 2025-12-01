@@ -1,7 +1,6 @@
 import argparse
 
 from agent.runners.DreamerRunner import DreamerRunner
-from agent_constrained.runners.DreamerRunner import DreamerRunner as DreamerRunnerConstrained
 
 from configs import Experiment, SimpleObservationConfig, NearRewardConfig, DeadlockPunishmentConfig, RewardsComposerConfig
 from configs.EnvConfigs import EnvCurriculumConfig #StarCraftConfig, 
@@ -15,18 +14,18 @@ from environments import Env, FlatlandType, FLATLAND_OBS_SIZE, FLATLAND_ACTION_S
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env', type=str, default="flatland", help='Flatland or SMAC env')
+    parser.add_argument('--env', type=str, default="flatland", help='Flatland env')
     parser.add_argument('--env_name', type=str, default="5_agents", help='Specific setting')
     parser.add_argument('--n_workers', type=int, default=2, help='Number of workers')
     parser.add_argument('--saving_name', type=str, default="model", help='Saving name for .pth model')
+    parser.add_argument('--time_limit', type=int, default=60, help='Time limit for training in seconds')
+    parser.add_argument('--steps', type=int, default=10 ** 7, help='Number of steps in the environment during training phase')
+    parser.add_argument('--episodes', type=int, default=10 ** 7, help='Number of episodes during training phase')
     return parser.parse_args()
 
 
-def train_dreamer(exp, n_workers, saving_name, time_limit, constrained=False):
-    if constrained:
-        runner = DreamerRunnerConstrained(exp.env_config, exp.learner_config, exp.controller_config, n_workers)
-    else:
-        runner = DreamerRunner(exp.env_config, exp.learner_config, exp.controller_config, n_workers)
+def train_dreamer(exp, n_workers, saving_name, time_limit):
+    runner = DreamerRunner(exp.env_config, exp.learner_config, exp.controller_config, n_workers)
     runner.run(exp.steps, exp.episodes, saving_name, time_limit)
     runner.learner.save_params("final_"+ saving_name)
 
@@ -82,8 +81,8 @@ if __name__ == "__main__":
     configs["learner_config"].ENV_TYPE = Env(args.env)
     configs["controller_config"].ENV_TYPE = Env(args.env)
 
-    exp = Experiment(steps=2400000,
-                     episodes=1700000,
+    exp = Experiment(steps=args.steps,
+                     episodes=args.episodes,
                      random_seed=RANDOM_SEED,
                      env_config=EnvCurriculumConfig(*zip(configs["env_config"]), Env(args.env),
                                                     obs_builder_config=configs["obs_builder_config"],
@@ -91,4 +90,4 @@ if __name__ == "__main__":
                      controller_config=configs["controller_config"],
                      learner_config=configs["learner_config"])
 
-    train_dreamer(exp, n_workers=args.n_workers, saving_name=args.saving_name, time_limit=60*60, constrained=True)
+    train_dreamer(exp, n_workers=args.n_workers, saving_name=args.saving_name, time_limit=args.time_limit)
